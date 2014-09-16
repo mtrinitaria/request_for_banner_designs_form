@@ -33,7 +33,7 @@ body{
   color: #fff;
 }
 #main form {
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 #main h2 {
   color: #D8E2A9;
@@ -48,7 +48,7 @@ body{
   color: #fff;
   padding: 10px 0 10px 20px;
   margin-bottom: 10px;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
 }
 #main .form-group .label {
   width: 25%;
@@ -106,9 +106,6 @@ body{
 #main ul.checklist li.selected {
   background-color: #a7c500;
 }
-#main ul.checklist li span {
-  /*padding: 5px;*/
-}
 
 #main .sizes > div > div {
   margin-bottom: 5px;
@@ -124,6 +121,7 @@ body{
   color: #fff;
   background-color: #d9534f;
   border-color: #d43f3a;
+  font-size: 1rem;
 }
 
 .btn.add:hover {

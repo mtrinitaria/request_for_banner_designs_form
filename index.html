@@ -49,7 +49,7 @@
               <span>{{item.name}}</span>
             </li>
           </ul>
-          
+
           <div class="sizes" ng-switch-when="inputs">
             <div ng-repeat="item in form.lists track by $index">
               <div>
@@ -81,26 +81,6 @@
       </div>
     </form>
   </div>
-  <script type="text/javascript">
-    var label = JFCustomWidget.getQueryString('QuestionLabel');
-    // document.getElementById('labelText').innerHTML = label;
-    //subscribing ready event and implementing widget related code inside callback function 
-    //is the best practice while developing widgets
-    // console.log(JFCustomWidget);
-    JFCustomWidget.subscribe("ready", function(){
-        //subscribe to form submit event
-        JFCustomWidget.subscribe("submit", function(){
-            var msg = {
-                //you should valid attribute to data for JotForm
-                //to be able to use youw widget as required
-                valid: true,
-                value: document.getElementById('userInput').value
-            }
-            // send value to JotForm
-            
-            JFCustomWidget.sendSubmit(msg);
-        });
-    });
-  </script>       
+       
 </body>
 </html>

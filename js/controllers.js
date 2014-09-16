@@ -57,7 +57,7 @@ requestFormApp.controller('HomeCtrl', function ($scope) {
   	if (item.selected) {
   		$scope.form.format.selects.push(item.name);
   	} else {
-  		$scope.form.format.selects.splice($scope.form.bannerType.selects.indexOf(item.name), 1);
+  		$scope.form.format.selects.splice($scope.form.format.selects.indexOf(item.name), 1);
   	}
   	/*if ($scope.form.bannerType.selects.indexOf(item.name) != -1) {
   		$scope.form.bannerType.selects.splice($scope.form.bannerType.selects.indexOf(item.name), 1);
