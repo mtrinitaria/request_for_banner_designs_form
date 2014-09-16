@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="requestFormApp">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <link rel="stylesheet" href="css/normalize.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
+  <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+
+  <script src="js/jquery/jquery.min.js"></script>
+  <script src="http://js.jotform.com/JotFormCustomWidget.min.js"></script>
+
+  <script src="js/angular/angular.js"></script>
+  <script src="js/angular/angular-route.min.js"></script>
+  
+  <script src="js/controllers.js"></script>
+
+</head>
+<body ng-controller="HomeCtrl">
+  <div id="main">
+    <h2>REQUEST FOR BANNER DESIGNS</h2>
+      <form name="entryForm" role="form" data-ng-submit="submitForm(entryForm)" novalidate>
+
+      <div class="form-group" ng-repeat="form in myform" >
+        <span class="label" ng-class="{head: (form.type == 'checkbox' || form.type == 'inputs')}">{{form.label}}:</span>
+        <span ng-switch on="form.type">
+          <input name="{{form.id}}" ng-switch-when="text" type="text" class="form-control"
+            ng-model="myform[form.id]"
+            addwatch="{{form.id}}"
+            bind-summary="{{form.id}}"
+            required>
+
+          <input name="{{form.id}}" ng-switch-when="email" type="email" class="form-control"
+            ng-model="myform[form.id]"
+            addwatch="{{form.id}}"
+            bind-summary="{{form.id}}"
+            required>
+
+          <textarea name="{{form.id}}" ng-switch-when="textarea" type="text" class="form-control"
+            ng-model="myform[form.id]"
+            addwatch="{{form.id}}"
+            bind-summary="{{form.id}}"
+            required></textarea>
+
+          <ul class="checklist" ng-switch-when="checkbox">
+            <li ng-repeat="item in form.lists" ng-class="{selected: (item.selected)}" ng-click="select(item)">
+              <span>{{item.name}}</span>
+            </li>
+          </ul>
+          
+          <div class="sizes" ng-switch-when="inputs">
+            <div ng-repeat="item in form.lists track by $index">
+              <div>
+                <span class="label">Size (WIDTH x HEIGHT):</span>
+                <input type="text" placeholder="any" ng-model="item.w">
+                <span>x</span>
+                <input type="text" placeholder="any" ng-model="item.h">
+                <button class="btn remove"><i class="glyphicon glyphicon-remove" ng-click="removeInput($index)"></i></button>
+              </div>
+            </div>
+            <button class="btn add" ng-click="addInput()">Add Size</button>
+          </div>
+
+          <select name="{{form.id}}" ng-switch-when="select" class="form-control" 
+            ng-model="myform[form.id]" 
+            addwatch="{{form.id}}"
+            bind-summary="{{form.id}}"
+            ng-options="item as item.name for item in form.lists" 
+            required>
+          </select>
+          
+        </span>
+      </div>
+
+      <div class="submit">
+        <div>
+          <button type="submit" class="btn submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script type="text/javascript">
+    var label = JFCustomWidget.getQueryString('QuestionLabel');
+    // document.getElementById('labelText').innerHTML = label;
+    //subscribing ready event and implementing widget related code inside callback function 
+    //is the best practice while developing widgets
+    // console.log(JFCustomWidget);
+    JFCustomWidget.subscribe("ready", function(){
+        //subscribe to form submit event
+        JFCustomWidget.subscribe("submit", function(){
+            var msg = {
+                //you should valid attribute to data for JotForm
+                //to be able to use youw widget as required
+                valid: true,
+                value: document.getElementById('userInput').value
+            }
+            // send value to JotForm
+            
+            JFCustomWidget.sendSubmit(msg);
+        });
+    });
+  </script>       
+</body>
+</html>
