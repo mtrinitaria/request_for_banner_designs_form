@@ -1,8 +1,7 @@
 <?php
 require_once('connection/appdb.php');
 
-// $rawdata = json_decode($HTTP_RAW_POST_DATA);
-$rawdata = json_decode($_GET['data']);
+$rawdata = json_decode($HTTP_RAW_POST_DATA);
 
 $from =  $rawdata->from;
 $to =  $rawdata->to;
