@@ -1,7 +1,10 @@
 <?php
 require_once('connection/appdb.php');
 
-$rawdata = json_decode($HTTP_RAW_POST_DATA);
+// echo $_GET['data'];
+
+$rawdata = json_decode($_GET['data']);
+// $rawdata = json_decode($HTTP_RAW_POST_DATA);
 
 
 $name = $rawdata->name;

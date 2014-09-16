@@ -3,7 +3,7 @@ var requestFormApp = angular.module('requestFormApp', ['ngRoute']);
 
 
 requestFormApp.controller('HomeCtrl', function ($scope, $http, $location, dateFilter) {
-	var API_PATH = $location.host() == 'localhost' ? 'http://localhost/jotform/request_for_banner_designs_form/app/' : 'http://mtrinitaria.com/jotform/request_for_banner_designs_form/app/';
+	var API_PATH = $location.host() == 'localhost' ? 'http://localhost/jotform/git/request_for_banner_designs_form/app/' : 'http://mtrinitaria.com/jotform/request_for_banner_designs_form/app/';
 	$scope.title = 'Home';
 
 	$scope.form = {};
@@ -81,22 +81,29 @@ requestFormApp.controller('HomeCtrl', function ($scope, $http, $location, dateFi
   	data.created = new Date();
 
   	// validate date
-  	// if not return
-  	// if (!(/(.+)@(.+){2,}\.(.+){2,}/.test(data.email)) /*validate email*/
-  	// 	|| data.name.length === 0
-  	// 	|| data.contactNumber.length === 0
-  	// 	|| data.bannerType.length === 0
-  	// 	|| data.format.length === 0
-  	// 	|| data.sizes.length === 0
-  	// 	|| data.adServer.length === 0
-  	// 	) {
-  	// 	return;
-  	// }
-		$http({
-	    url: API_PATH + 'SaveEntry.php',
-	    method: "JSONP",
-	    data:data
-		}).success(function(){
+  	if not return
+  	if (!(/(.+)@(.+){2,}\.(.+){2,}/.test(data.email)) /*validate email*/
+  		|| data.name.length === 0
+  		|| data.contactNumber.length === 0
+  		|| data.bannerType.length === 0
+  		|| data.format.length === 0
+  		|| data.sizes.length === 0
+  		|| data.adServer.length === 0
+  		) {
+  		return;
+  	}
+    
+		// $http.jsonp(API_PATH + 'SaveEntry.php?callback=JSON_CALLBACK&data=data', data).success(function(){
+  //     resetForm();
+  //     $scope.submitted = true;
+  //   });
+    $http.jsonp(API_PATH + 'SaveEntry.php', {
+      params: {
+        callback: 'JSON_CALLBACK',
+        format:'json',
+        data:data
+      }
+    }).success(function(){
 			resetForm();
 			$scope.submitted = true;
 		});
@@ -112,7 +119,16 @@ requestFormApp.controller('HomeCtrl', function ($scope, $http, $location, dateFi
 
   $scope.entries = [];
   $scope.find = function() {
-		$http({
+    $http.jsonp(API_PATH + 'GetEntries.php', {
+      params: {
+        callback: 'JSON_CALLBACK',
+        format:'json',
+        data:{from:0, to:100}
+      }
+    }).success(function(){
+      $scope.entries = res;
+    });
+		/*$http({
 	    url: API_PATH + 'GetEntries.php',
 	    method: "JSONP",
 	    data:{from:0, to:100}
@@ -121,7 +137,7 @@ requestFormApp.controller('HomeCtrl', function ($scope, $http, $location, dateFi
 			console.log(res)
 			// resetForm();
 			// $scope.submitted = true;
-		});
+		});*/
   }
 
 	$scope.sort = {
