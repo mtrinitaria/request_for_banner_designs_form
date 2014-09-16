@@ -1,26 +1,9 @@
-// var label = JFCustomWidget.getQueryString('QuestionLabel');
-//subscribing ready event and implementing widget related code inside callback function 
-//is the best practice while developing widgets
-/*JFCustomWidget.subscribe("ready", function(){
-    //subscribe to form submit event
-    JFCustomWidget.subscribe("submit", function(){
-        var msg = {
-            //you should valid attribute to data for JotForm
-            //to be able to use youw widget as required
-            valid: true,
-            value: document.getElementById('userInput').value
-        }
-        // send value to JotForm
-        
-        JFCustomWidget.sendSubmit(msg);
-    });
-});*/
-
 
 var requestFormApp = angular.module('requestFormApp', ['ngRoute']);
 
 
-requestFormApp.controller('HomeCtrl', function ($scope) {
+requestFormApp.controller('HomeCtrl', function ($scope, $http, $location, dateFilter) {
+	var API_PATH = $location.host() == 'localhost' ? 'http://localhost/jotform/request_for_banner_designs_form/app/' : 'http://mtrinitaria.com/jotform/request_for_banner_designs_form/app/';
 	$scope.title = 'Home';
 
 	$scope.form = {};
@@ -46,6 +29,7 @@ requestFormApp.controller('HomeCtrl', function ($scope) {
 		$scope.form.sizes.lists.push({w:'', h:''});
   }
   $scope.removeInput = function(index) {
+  	// console.log($scope.form.sizes.lists, index)
 		$scope.form.sizes.lists.splice(index, 1);
   }
   $scope.select = function(item) {
@@ -66,7 +50,24 @@ requestFormApp.controller('HomeCtrl', function ($scope) {
   	}*/
   	
   }
+  $scope.submitted = false;
+  $scope.okay = function() {
+  	$scope.submitted = false;
+  }
 
+  var resetForm = function() {
+	  for (var i=0;i < $scope.myform.length; i+=1) {
+	    $scope.myform[$scope.myform[i].id] = '';
+	  }
+	  // reset sizes
+	  $scope.form.sizes.lists.length = 0;
+	  $scope.form.sizes.lists.push({w:'', h:''});
+		// reset formats
+	  for (var i=0;i<$scope.form.format.lists.length;i++) {
+	  	$scope.form.format.lists[i].selected = false;	
+	  }
+	  $scope.form.format.selects.length = 0;
+  }
   $scope.submitForm = function(form) {
   	var data = {};
   	data.name = $scope.myform.name;
@@ -75,21 +76,31 @@ requestFormApp.controller('HomeCtrl', function ($scope) {
   	data.bannerType = $scope.myform.bannerType.name;
   	data.format = $scope.form.format.selects;
   	data.sizes = $scope.form.sizes.lists;
-  	data.adServer = $scope.myform.adServer;
+  	data.adServer = $scope.myform.adServer.name;
   	data.notes = $scope.myform.notes;
+  	data.created = new Date();
 
   	// validate date
   	// if not return
-  	if (!(/(.+)@(.+){2,}\.(.+){2,}/.test(data.email)) /*validate email*/
-  		|| data.name.length === 0
-  		|| data.contactNumber.length === 0
-  		|| data.bannerType.length === 0
-  		|| data.format.length === 0
-  		|| data.sizes.length === 0
-  		|| data.adServer.length === 0
-  		) {
-  		return;
-  	}
+  	// if (!(/(.+)@(.+){2,}\.(.+){2,}/.test(data.email)) /*validate email*/
+  	// 	|| data.name.length === 0
+  	// 	|| data.contactNumber.length === 0
+  	// 	|| data.bannerType.length === 0
+  	// 	|| data.format.length === 0
+  	// 	|| data.sizes.length === 0
+  	// 	|| data.adServer.length === 0
+  	// 	) {
+  	// 	return;
+  	// }
+		$http({
+	    url: API_PATH + 'SaveEntry.php',
+	    method: "POST",
+	    data:data
+		}).success(function(){
+			resetForm();
+			$scope.submitted = true;
+		});
+
   	JFCustomWidget.subscribe("ready", function(){
 	    //subscribe to form submit event
 	    JFCustomWidget.subscribe("submit", function(){
@@ -98,6 +109,35 @@ requestFormApp.controller('HomeCtrl', function ($scope) {
 	    });
 		});
   }
+
+  $scope.entries = [];
+  $scope.find = function() {
+		$http({
+	    url: API_PATH + 'GetEntries.php',
+	    method: "POST",
+	    data:{from:0, to:100}
+		}).success(function(res){
+			$scope.entries = res;
+			console.log(res)
+			// resetForm();
+			// $scope.submitted = true;
+		});
+  }
+
+	$scope.sort = {
+      column: '',
+      descending: false
+  };    
+  $scope.changeSorting = function(column) {
+    var sort = $scope.sort;
+
+    if (sort.column === column) {
+        sort.descending = !sort.descending;
+    } else {
+        sort.column = column;
+        sort.descending = false;
+    }
+  };
 
 });
 

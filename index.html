@@ -10,7 +10,7 @@
   <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
   <script src="js/jquery/jquery.min.js"></script>
-  <script src="http://js.jotform.com/JotFormCustomWidget.min.js"></script>
+  <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
 
   <script src="js/angular/angular.js"></script>
   <script src="js/angular/angular-route.min.js"></script>
@@ -60,7 +60,7 @@
                 <button class="btn remove"><i class="glyphicon glyphicon-remove" ng-click="removeInput($index)"></i></button>
               </div>
             </div>
-            <button class="btn add" ng-click="addInput()">Add Size</button>
+            <span class="btn add" ng-click="addInput()">Add Size</span>
           </div>
 
           <select name="{{form.id}}" ng-switch-when="select" class="form-control" 
@@ -80,6 +80,17 @@
         </div>
       </div>
     </form>
+
+    <div class="overlay" ng-show="submitted">
+      <div class="wrapper">
+        <div>
+          <h2>Thank you for submitting request for banner design!</h2>
+          <blockquote>We will respond to you within 24hrs.</blockquote>
+          <button class="btn ok" ng-click="okay()">Okay</button>
+        </div>
+      </div>
+    </div>
+
   </div>
        
 </body>

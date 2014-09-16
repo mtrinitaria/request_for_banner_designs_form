@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="requestFormApp">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <link rel="stylesheet" href="css/normalize.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+
+  <script src="js/jquery/jquery.min.js"></script>
+  <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
+
+  <script src="js/angular/angular.js"></script>
+  <script src="js/angular/angular-route.min.js"></script>
+  
+  <script src="js/controllers.js"></script>
+
+</head>
+<body ng-controller="HomeCtrl">
+  <div class="container">
+    <h2>REQUEST FOR BANNER DESIGNS</h2>
+
+    <table class="table table-striped text-left" data-ng-init="find()">
+    <thead>
+      <tr>
+        <th class="text-capitalize" ng-repeat="form in myform">{{form.label}} <i class="glyphicon glyphicon-sort btn btn-sm" ng-click="changeSorting(form.id)"></i></span></th>
+        <th class="text-capitalize">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr class="text-left" ng-repeat="data in entries | filter:searchSelected track by $index"> -->
+      <tr class="text-left" ng-repeat="data in entries | orderBy:sort.column:sort.descending track by $index">
+        <td>{{data.name}}</td>
+        <td>{{data.email}}</td>
+        <td>{{data.contactNumber}}</td>
+        <td>{{data.bannerType}}</td>
+        <td>
+          <ol>
+            <li class="lead" ng-repeat="item in data.format">{{item}}</li>
+          </ol>
+        </td>
+        <td>
+          <ol>
+            <li class="lead" ng-repeat="item in data.sizes">{{item.w}} x {{item.h}}</li>
+          </ol>
+        </td>
+        <td>{{data.adServer}}</td>
+        <td>{{data.notes}}</td>
+        <td>{{data.created | date:'medium'}}</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</body>
+</html>
