@@ -114,7 +114,7 @@ requestFormApp.controller('HomeCtrl', function ($scope, $http, $location, dateFi
   $scope.find = function() {
 		$http({
 	    url: API_PATH + 'GetEntries.php',
-	    method: "POST",
+	    method: "JSONP",
 	    data:{from:0, to:100}
 		}).success(function(res){
 			$scope.entries = res;
