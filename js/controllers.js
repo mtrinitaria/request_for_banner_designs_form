@@ -94,7 +94,7 @@ requestFormApp.controller('HomeCtrl', function ($scope, $http, $location, dateFi
   	}
 		$http({
 	    url: API_PATH + 'SaveEntry.php',
-	    method: "POST",
+	    method: "JSONP",
 	    data:data
 		}).success(function(){
 			resetForm();
